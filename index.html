@@ -112,19 +112,39 @@
   .hero-canvas{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity 1.2s ease .4s}
   .hero-canvas.ready{opacity:1}
 
+  /* page-wide field living in the left/right gutters.
+     Sits above the section tints so it stays visible, but fades to nothing
+     before it reaches the content column. */
+  .side-canvas{
+    position:fixed;inset:0;z-index:2;pointer-events:none;
+    opacity:0;transition:opacity .9s ease;
+  }
+  .side-canvas.lit{opacity:1}
+  @media (max-width:980px){ .side-canvas{display:none} }
+
   /* slow scanning sweep, like a crawler passing over the page */
   .scan{
-    position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden;
+    position:absolute;inset:0;z-index:4;pointer-events:none;
   }
+  /* Extends well past the top and bottom so its own edges are never on screen;
+     heavy blur keeps it reading as light, not as a shape. */
   .scan::before{
-    content:"";position:absolute;top:0;bottom:0;width:36%;left:-40%;
-    background:linear-gradient(100deg, transparent 0%, rgba(140,180,255,0.07) 45%, rgba(255,255,255,0.05) 50%, transparent 100%);
-    animation:scan-sweep 9s ease-in-out infinite;
+    content:"";position:absolute;
+    top:-30%;bottom:-30%;width:58%;left:-70%;
+    background:linear-gradient(100deg,
+      transparent 0%,
+      rgba(140,180,255,0.035) 28%,
+      rgba(190,214,255,0.06) 50%,
+      rgba(140,180,255,0.035) 72%,
+      transparent 100%);
+    filter:blur(80px);
+    will-change:transform;
+    animation:scan-sweep 17s ease-in-out infinite;
   }
   @keyframes scan-sweep{
-    0%{left:-40%}
-    55%{left:120%}
-    100%{left:120%}
+    0%{transform:translate3d(0,0,0)}
+    60%{transform:translate3d(320%,0,0)}
+    100%{transform:translate3d(320%,0,0)}
   }
 
   /* scroll progress */
@@ -665,6 +685,7 @@
   <canvas class="hero-canvas" id="net"></canvas>
   <div class="scan"></div>
 </div>
+<canvas class="side-canvas" id="net-sides" aria-hidden="true"></canvas>
 <div class="progress" id="progress" aria-hidden="true"></div>
 
 <div class="page">
@@ -1079,6 +1100,7 @@
   /* ---- hero parallax ---- */
   var par = document.querySelector('.hero-photo__par');
   var progress = document.getElementById('progress');
+  var sideCanvas = document.getElementById('net-sides');
   var ticking = false;
   function onScroll(){
     onScrollHeader();
@@ -1092,6 +1114,9 @@
       }
       if(par && !reduceMotion && y < window.innerHeight * 1.2){
         par.style.transform = 'translate3d(0,' + (y * 0.28) + 'px,0)';
+      }
+      if(sideCanvas){
+        sideCanvas.classList.toggle('lit', y > window.innerHeight * 0.5);
       }
       ticking = false;
     });
@@ -1160,34 +1185,59 @@
     track.innerHTML = groupHTML + groupHTML;
   }
 
-  /* ---- animated particle network ---- */
-  var canvas = document.getElementById('net');
-  if(canvas && !reduceMotion){
-    var ctx = canvas.getContext('2d');
-    var shell = canvas.parentElement;
-    var nodes = [];
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var W = 0, H = 0, visible = true, rafId = null;
-    var pointer = {x:-9999, y:-9999};
+  /* ---- animated particle network ----
+     One engine, two instances: a full-bleed field inside the hero, and a
+     page-wide field that lives in the left/right gutters and links to the
+     cursor wherever it goes. */
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var fields = [];
+  var pointer = {x:-9999, y:-9999};
 
-    function sizeCanvas(){
-      var r = shell.getBoundingClientRect();
-      W = r.width; H = r.height;
-      canvas.width = Math.round(W * dpr);
-      canvas.height = Math.round(H * dpr);
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      buildNodes();
+  function createField(canvas, opts){
+    var ctx = canvas.getContext('2d');
+    var nodes = [];
+    var W = 0, H = 0, rafId = null, visible = true, enabled = true;
+    var bands = null;
+
+    function measure(){
+      if(opts.fixed){
+        return {w: window.innerWidth, h: window.innerHeight, left: 0, top: 0};
+      }
+      var r = canvas.parentElement.getBoundingClientRect();
+      return {w: r.width, h: r.height, left: r.left, top: r.top};
     }
 
-    function buildNodes(){
-      var target = Math.round(Math.min(96, Math.max(28, (W * H) / 20000)));
+    function computeBands(){
+      if(!opts.sides){ bands = null; return; }
+      // gutter beside the content column, with a floor so it never vanishes
+      var b = Math.max(150, Math.min((W - 1240) / 2 + 80, W * 0.3));
+      bands = [{x0: 0, x1: b}, {x0: W - b, x1: W}];
+    }
+
+    function spawn(){
+      if(!bands) return {x: Math.random() * W, y: Math.random() * H};
+      var band = bands[Math.random() < 0.5 ? 0 : 1];
+      return {x: band.x0 + Math.random() * (band.x1 - band.x0), y: Math.random() * H};
+    }
+
+    /* 1 at the outer page edge, fading to 0 as nodes approach the content */
+    function edgeAlpha(x){
+      if(!bands) return 1;
+      var l = bands[0], r = bands[1];
+      if(x <= l.x1) return Math.max(0, Math.min(1, (l.x1 - x) / (l.x1 - l.x0) * 1.5));
+      if(x >= r.x0) return Math.max(0, Math.min(1, (x - r.x0) / (r.x1 - r.x0) * 1.5));
+      return 0;
+    }
+
+    function build(){
+      computeBands();
+      var area = bands ? (bands[0].x1 - bands[0].x0) * H * 2 : W * H;
+      var target = Math.round(Math.min(opts.max || 96, Math.max(opts.min || 24, area / (opts.spread || 20000))));
       nodes = [];
       for(var i = 0; i < target; i++){
+        var p = spawn();
         nodes.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
+          x: p.x, y: p.y,
           vx: (Math.random() - 0.5) * 0.22,
           vy: (Math.random() - 0.5) * 0.22,
           r: Math.random() * 1.6 + 0.9,
@@ -1196,28 +1246,62 @@
       }
     }
 
+    function size(){
+      var m = measure();
+      W = m.w; H = m.h;
+      enabled = !(opts.minWidth && window.innerWidth < opts.minWidth);
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      build();
+      if(!enabled){ stop(); ctx.clearRect(0, 0, W, H); }
+      else { start(); }
+    }
+
+    function localPointer(){
+      if(opts.fixed) return pointer;
+      var r = canvas.parentElement.getBoundingClientRect();
+      return {x: pointer.x - r.left, y: pointer.y - r.top};
+    }
+
     function draw(){
       ctx.clearRect(0, 0, W, H);
-      var i, j, a, b, dx, dy, dist;
-      var LINK = 132;
+      var LINK = opts.link || 132;
+      var CURSOR = opts.cursor || 190;
+      var pt = localPointer();
+      var i, j, a, b, dx, dy, dist, aA, aB;
 
       for(i = 0; i < nodes.length; i++){
         a = nodes[i];
         a.x += a.vx; a.y += a.vy;
-        if(a.x < -20) a.x = W + 20;
-        if(a.x > W + 20) a.x = -20;
+        if(bands){
+          // keep each node inside its own gutter, wrap vertically
+          var band = a.x < W / 2 ? bands[0] : bands[1];
+          if(a.x < band.x0){ a.x = band.x0; a.vx = -a.vx; }
+          if(a.x > band.x1){ a.x = band.x1; a.vx = -a.vx; }
+        } else {
+          if(a.x < -20) a.x = W + 20;
+          if(a.x > W + 20) a.x = -20;
+        }
         if(a.y < -20) a.y = H + 20;
         if(a.y > H + 20) a.y = -20;
       }
 
       for(i = 0; i < nodes.length; i++){
         a = nodes[i];
+        aA = edgeAlpha(a.x);
+        if(aA <= 0.01) continue;
+
         for(j = i + 1; j < nodes.length; j++){
           b = nodes[j];
           dx = a.x - b.x; dy = a.y - b.y;
           dist = Math.sqrt(dx*dx + dy*dy);
           if(dist < LINK){
-            var o = (1 - dist / LINK) * 0.34;
+            aB = edgeAlpha(b.x);
+            var o = (1 - dist / LINK) * 0.34 * Math.min(aA, aB);
+            if(o <= 0.003) continue;
             ctx.strokeStyle = (a.accent || b.accent)
               ? 'rgba(255,110,135,' + o.toFixed(3) + ')'
               : 'rgba(168,196,255,' + (o * 0.8).toFixed(3) + ')';
@@ -1229,19 +1313,21 @@
           }
         }
 
-        dx = a.x - pointer.x; dy = a.y - pointer.y;
+        dx = a.x - pt.x; dy = a.y - pt.y;
         dist = Math.sqrt(dx*dx + dy*dy);
-        if(dist < 190){
-          var po = (1 - dist / 190) * 0.5;
+        if(dist < CURSOR){
+          var po = (1 - dist / CURSOR) * 0.5 * Math.max(aA, 0.45);
           ctx.strokeStyle = 'rgba(255,120,145,' + po.toFixed(3) + ')';
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
-          ctx.lineTo(pointer.x, pointer.y);
+          ctx.lineTo(pt.x, pt.y);
           ctx.stroke();
         }
 
-        ctx.fillStyle = a.accent ? 'rgba(255,120,145,0.9)' : 'rgba(214,230,255,0.7)';
+        ctx.fillStyle = a.accent
+          ? 'rgba(255,120,145,' + (0.9 * aA).toFixed(3) + ')'
+          : 'rgba(214,230,255,' + (0.7 * aA).toFixed(3) + ')';
         ctx.beginPath();
         ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
         ctx.fill();
@@ -1250,35 +1336,55 @@
       rafId = requestAnimationFrame(draw);
     }
 
-    function start(){ if(rafId === null){ rafId = requestAnimationFrame(draw); } }
+    function start(){ if(rafId === null && visible && enabled){ rafId = requestAnimationFrame(draw); } }
     function stop(){ if(rafId !== null){ cancelAnimationFrame(rafId); rafId = null; } }
 
-    sizeCanvas();
+    size();
     canvas.classList.add('ready');
-    start();
+
+    if(opts.watch && 'IntersectionObserver' in window){
+      new IntersectionObserver(function(entries){
+        visible = entries[0].isIntersecting;
+        if(visible){ start(); } else { stop(); }
+      }, {threshold:0}).observe(opts.watch);
+    }
+
+    return {size:size, start:start, stop:stop, isVisible:function(){ return visible && enabled; }};
+  }
+
+  if(!reduceMotion){
+    var heroCanvas = document.getElementById('net');
+    if(heroCanvas){
+      fields.push(createField(heroCanvas, {
+        watch: heroCanvas.parentElement,
+        link: 132, cursor: 190, max: 96, min: 28, spread: 20000
+      }));
+    }
+
+    if(sideCanvas){
+      fields.push(createField(sideCanvas, {
+        fixed: true, sides: true, minWidth: 981,
+        link: 150, cursor: 300, max: 78, min: 20, spread: 15000
+      }));
+    }
+
+    window.addEventListener('pointermove', function(e){
+      pointer.x = e.clientX; pointer.y = e.clientY;
+    }, {passive:true});
+    document.addEventListener('pointerleave', function(){ pointer.x = -9999; pointer.y = -9999; });
 
     var resizeTimer;
     window.addEventListener('resize', function(){
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(sizeCanvas, 180);
+      resizeTimer = setTimeout(function(){
+        fields.forEach(function(f){ f.size(); });
+      }, 180);
     });
 
-    window.addEventListener('pointermove', function(e){
-      var r = shell.getBoundingClientRect();
-      pointer.x = e.clientX - r.left;
-      pointer.y = e.clientY - r.top;
-    }, {passive:true});
-    window.addEventListener('pointerleave', function(){ pointer.x = -9999; pointer.y = -9999; });
-
-    /* stop drawing once the hero has scrolled away, and when the tab is hidden */
-    if('IntersectionObserver' in window){
-      new IntersectionObserver(function(entries){
-        visible = entries[0].isIntersecting;
-        if(visible){ start(); } else { stop(); }
-      }, {threshold:0}).observe(shell);
-    }
     document.addEventListener('visibilitychange', function(){
-      if(document.hidden){ stop(); } else if(visible){ start(); }
+      fields.forEach(function(f){
+        if(document.hidden){ f.stop(); } else { f.start(); }
+      });
     });
   }
 
