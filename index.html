@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOPI — Pozycjonowanie stron i SEO, które przynosi klientów</title>
+<meta name="description" content="SOPI pomaga firmom zdobywać klientów z Google. Pozycjonowanie lokalne i krajowe, wizytówka Google, audyty SEO, treści, link building oraz White Label dla agencji.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E91F3C' d='M3 13.5 10.5 3l3 4.5L21 3l-6 10.5-3-4.2-4.2 6.7z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1526;
+    --bg-2:#141e30;
+    --panel:#182238;
+    --panel-2:#1c2740;
+    --border:rgba(255,255,255,0.09);
+    --border-strong:rgba(255,255,255,0.16);
+    --text:#f4f5f7;
+    --muted:#a7b0c2;
+    --muted-2:#7c8598;
+    --accent:#e91f3c;
+    --accent-2:#ff4d63;
+    --accent-dim:rgba(233,31,60,0.14);
+    --radius:10px;
+    --radius-sm:5px;
+    --maxw:1180px;
+    font-size:16px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  html,body{background:var(--bg);color:var(--text)}
+  body{
+    font-family:"Open Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+    line-height:1.5;
+    background:
+      radial-gradient(1100px 620px at 82% -8%, rgba(233,31,60,0.16), transparent 60%),
+      radial-gradient(900px 560px at -10% 18%, rgba(60,90,160,0.20), transparent 55%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 45%, var(--bg) 100%);
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  img{max-width:100%;display:block}
+  ul{list-style:none}
+  section{position:relative}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .hero-grid > *, .proof-card > *, .ai-grid > *, .wl-card > *, .cta-card > *{min-width:0}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--accent-2);
+    background:var(--accent-dim);
+    border:1px solid rgba(233,31,60,0.35);
+    padding:6px 12px;border-radius:99px;
+    margin-bottom:16px;
+  }
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  h1,h2,h3,h4{font-weight:700;letter-spacing:-0.01em;color:var(--text)}
+  h2{font-size:clamp(28px,3.4vw,40px);line-height:1.15}
+  h3{font-size:19px;line-height:1.3}
+  .section-head{max-width:640px;margin:0 auto 44px;text-align:center}
+  .section-head p{color:var(--muted);font-size:16px;margin-top:12px}
+  .mark{
+    background:linear-gradient(180deg, rgba(233,31,60,0.95), rgba(233,31,60,0.85));
+    color:#fff;padding:1px 10px 4px;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    height:50px;padding:0 28px;border-radius:var(--radius);
+    font-size:14px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(180deg, var(--accent-2), var(--accent));
+    color:#fff;
+    box-shadow:0 10px 26px -8px rgba(233,31,60,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px -8px rgba(233,31,60,0.7), inset 0 1px 0 rgba(255,255,255,0.3)}
+  .btn-ghost{
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--border-strong);
+    color:var(--text);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.3)}
+  .btn-sm{height:40px;padding:0 18px;font-size:12.5px;border-radius:var(--radius-sm)}
+  .link-arrow{display:inline-flex;align-items:center;gap:6px;color:var(--accent-2);font-weight:700;font-size:14px}
+  .link-arrow svg{transition:transform .2s ease}
+  .link-arrow:hover svg{transform:translateX(3px)}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(13,21,38,0.72);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px;gap:20px}
+  .logo{display:inline-flex;align-items:center;gap:9px;font-size:20px;font-weight:800;letter-spacing:-0.01em}
+  .logo svg{flex:none}
+  .logo b{color:var(--text)}
+  .navlinks{display:flex;align-items:center;gap:6px}
+  .navlinks a{
+    padding:10px 14px;border-radius:8px;font-size:14.5px;font-weight:600;color:var(--muted);
+    transition:background .2s ease,color .2s ease;
+  }
+  .navlinks a:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+  .nav-cta{display:flex;align-items:center;gap:10px}
+  .burger{display:none;width:42px;height:42px;border-radius:8px;border:1px solid var(--border-strong);align-items:center;justify-content:center;background:rgba(255,255,255,0.04)}
+  .burger span{display:block;width:18px;height:1.5px;background:#fff;position:relative}
+  .burger span::before,.burger span::after{content:"";position:absolute;left:0;width:18px;height:1.5px;background:#fff}
+  .burger span::before{top:-6px}
+  .burger span::after{top:6px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 64px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center}
+  .stars{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);margin-bottom:22px}
+  .stars .icons{display:inline-flex;gap:2px;color:#ffb547}
+  .hero h1{font-size:clamp(34px,4.6vw,54px);line-height:1.1;letter-spacing:-0.02em;margin-bottom:20px}
+  .hero p.lede{font-size:17.5px;color:var(--muted);max-width:520px;margin-bottom:32px}
+  .hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+
+  /* search animation mock */
+  .search-mock{
+    position:relative;border-radius:18px;
+    background:linear-gradient(160deg, var(--panel), var(--panel-2));
+    border:1px solid var(--border-strong);
+    box-shadow:0 30px 70px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+    padding:22px;
+    overflow:hidden;
+  }
+  .search-mock::before{
+    content:"";position:absolute;inset:-40%;
+    background:radial-gradient(circle at 30% 20%, rgba(233,31,60,0.18), transparent 55%);
+    pointer-events:none;
+  }
+  .search-mock-top{display:flex;align-items:center;gap:7px;margin-bottom:18px}
+  .search-mock-top span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.14)}
+  .search-bar{
+    position:relative;z-index:1;
+    display:flex;align-items:center;gap:12px;
+    background:#0f1728;border:1px solid var(--border-strong);border-radius:999px;
+    padding:14px 20px;margin-bottom:20px;
+  }
+  .search-bar svg{flex:none;color:var(--muted-2)}
+  .search-bar .q{font-size:15px;color:var(--text);white-space:nowrap;overflow:hidden}
+  .caret{display:inline-block;width:2px;height:16px;background:var(--accent-2);margin-left:2px;vertical-align:-3px;animation:blink 1s step-end infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .results{position:relative;z-index:1;display:flex;flex-direction:column;gap:12px}
+  .result{
+    display:flex;align-items:center;gap:14px;
+    background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;
+    padding:14px 16px;opacity:0;transform:translateY(10px);
+    animation:resultIn .6s ease forwards;
+  }
+  .result.pinned{border-color:rgba(233,31,60,0.4);background:linear-gradient(90deg, rgba(233,31,60,0.1), rgba(233,31,60,0.02))}
+  .result .pin{
+    flex:none;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    background:var(--accent-dim);color:var(--accent-2);
+  }
+  .result .body{flex:1;min-width:0}
+  .result .t{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .result .u{font-size:12px;color:#7fd88f;margin-bottom:2px}
+  .result .d{font-size:12.5px;color:var(--muted-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .result .badge-top{flex:none;font-size:10.5px;font-weight:800;letter-spacing:0.04em;color:var(--accent-2);background:rgba(233,31,60,0.14);border:1px solid rgba(233,31,60,0.35);padding:4px 8px;border-radius:6px}
+  @keyframes resultIn{to{opacity:1;transform:translateY(0)}}
+
+  /* ---------- trust bar ---------- */
+  .trustbar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,0.015)}
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:36px 0}
+  .trust-item{text-align:center}
+  .trust-item .num{font-size:30px;font-weight:800;color:var(--text);letter-spacing:-0.02em}
+  .trust-item .num span{color:var(--accent-2)}
+  .trust-item .lbl{font-size:13px;color:var(--muted);margin-top:4px}
+
+  /* ---------- services ---------- */
+  .services{padding:96px 0 20px}
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .svc-card{
+    background:linear-gradient(160deg, var(--panel), rgba(24,34,56,0.4));
+    border:1px solid var(--border);border-radius:16px;padding:26px 24px;
+    transition:border-color .2s ease, transform .2s ease, background .2s ease;
+  }
+  .svc-card:hover{border-color:rgba(233,31,60,0.4);transform:translateY(-3px)}
+  .svc-icon{
+    width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:var(--accent-dim);color:var(--accent-2);margin-bottom:16px;
+  }
+  .svc-card h3{margin-bottom:8px}
+  .svc-card p{font-size:14.5px;color:var(--muted);margin-bottom:14px}
+
+  /* ---------- process ---------- */
+  .process{padding:96px 0}
+  .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .step{
+    position:relative;padding:26px 20px 22px;border-radius:14px;
+    background:rgba(255,255,255,0.025);border:1px solid var(--border);
+  }
+  .step .n{
+    font-size:13px;font-weight:800;color:var(--accent-2);
+    display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:8px;background:var(--accent-dim);margin-bottom:14px;
+  }
+  .step h3{font-size:16px;margin-bottom:6px}
+  .step p{font-size:13.5px;color:var(--muted)}
+
+  /* ---------- proof / case study ---------- */
+  .proof{padding:96px 0}
+  .proof-card{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    background:linear-gradient(135deg, var(--panel), var(--panel-2));
+    border:1px solid var(--border-strong);border-radius:20px;overflow:hidden;
+  }
+  .proof-copy{padding:48px}
+  .proof-copy .tag{font-size:12.5px;color:var(--muted-2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;margin-bottom:10px}
+  .proof-copy h3{font-size:24px;margin-bottom:14px}
+  .proof-copy p{color:var(--muted);font-size:15px;margin-bottom:22px}
+  .proof-metrics{padding:48px;background:rgba(0,0,0,0.18);display:flex;flex-direction:column;gap:18px;justify-content:center}
+  .pm{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:16px}
+  .pm:last-child{border-bottom:none;padding-bottom:0}
+  .pm .lbl{font-size:13.5px;color:var(--muted)}
+  .pm .val{font-size:22px;font-weight:800;color:var(--text)}
+  .pm .val span{color:#7fd88f;font-size:13px;font-weight:700;margin-left:6px}
+
+  /* ---------- why ---------- */
+  .why{padding:96px 0}
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .why-card{padding:28px 24px;border-radius:16px;border:1px solid var(--border);background:rgba(255,255,255,0.02)}
+  .why-card .ico{width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;color:var(--accent-2);margin-bottom:16px}
+  .why-card h3{margin-bottom:8px}
+  .why-card p{font-size:14.5px;color:var(--muted)}
+
+  /* ---------- ai seo ---------- */
+  .aiseo{padding:96px 0}
+  .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .ai-flow{display:flex;flex-direction:column;gap:12px}
+  .flow-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .flow-chip{
+    font-size:13px;font-weight:700;padding:9px 14px;border-radius:999px;
+    background:rgba(255,255,255,0.05);border:1px solid var(--border-strong);color:var(--text);
+  }
+  .flow-chip.accent{background:var(--accent-dim);border-color:rgba(233,31,60,0.4);color:var(--accent-2)}
+  .flow-arrow{color:var(--muted-2)}
+  .flow-label{font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted-2);font-weight:700;margin-top:6px}
+  .ai-grid h2{margin-bottom:16px}
+  .ai-grid > div > p{color:var(--muted);font-size:15.5px;margin-bottom:28px}
+
+  /* ---------- white label ---------- */
+  .whitelabel{padding:96px 0}
+  .wl-card{
+    display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;
+    background:linear-gradient(120deg, rgba(233,31,60,0.12), rgba(255,255,255,0.02));
+    border:1px solid rgba(233,31,60,0.3);border-radius:20px;padding:44px 48px;
+  }
+  .wl-card h2{margin-bottom:12px;font-size:28px}
+  .wl-card p{color:var(--muted);font-size:15.5px;max-width:560px;margin-bottom:18px}
+  .wl-tags{display:flex;gap:10px;flex-wrap:wrap}
+  .wl-tags span{font-size:12.5px;font-weight:700;color:var(--muted);border:1px solid var(--border-strong);padding:6px 12px;border-radius:999px}
+
+  /* ---------- testimonials ---------- */
+  .testi{padding:96px 0}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .testi-card{padding:26px 24px;border-radius:16px;background:rgba(255,255,255,0.025);border:1px solid var(--border)}
+  .testi-stars{color:#ffb547;display:flex;gap:2px;margin-bottom:14px}
+  .testi-card p.quote{font-size:14.5px;color:var(--text);line-height:1.6;margin-bottom:18px}
+  .testi-who{display:flex;align-items:center;gap:10px}
+  .testi-who .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent-2),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff}
+  .testi-who .name{font-size:13.5px;font-weight:700}
+  .testi-who .co{font-size:12px;color:var(--muted-2)}
+
+  /* ---------- faq ---------- */
+  .faq{padding:96px 0}
+  .faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+  .faq-item{border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,0.02);overflow:hidden}
+  .faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;font-size:15px;font-weight:700}
+  .faq-q svg{flex:none;transition:transform .25s ease;color:var(--muted)}
+  .faq-item[data-open="true"] .faq-q svg{transform:rotate(45deg);color:var(--accent-2)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .faq-a p{padding:0 22px 20px;font-size:14px;color:var(--muted);line-height:1.6}
+
+  /* ---------- final cta ---------- */
+  .cta{padding:96px 0 110px}
+  .cta-card{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    background:linear-gradient(135deg, var(--panel), var(--panel-2));
+    border:1px solid var(--border-strong);border-radius:22px;overflow:hidden;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,0.6);
+  }
+  .cta-copy{padding:52px}
+  .cta-copy h2{margin-bottom:14px}
+  .cta-copy p{color:var(--muted);font-size:15.5px;margin-bottom:26px}
+  .cta-list{display:flex;flex-direction:column;gap:12px}
+  .cta-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted)}
+  .cta-list svg{flex:none;color:#7fd88f;margin-top:2px}
+  .cta-form{padding:52px;background:rgba(0,0,0,0.2)}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em}
+  .field input{
+    width:100%;height:46px;border-radius:9px;border:1px solid var(--border-strong);
+    background:#0f1728;color:var(--text);padding:0 14px;font-size:14px;font-family:inherit;
+  }
+  .field input:focus{outline:none;border-color:var(--accent-2)}
+  .cta-form .btn{width:100%;margin-top:6px}
+  .cta-note{font-size:12px;color:var(--muted-2);margin-top:14px;text-align:center}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--border);padding:36px 0}
+  .foot-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .foot-row .logo{font-size:16px}
+  .foot-links{display:flex;gap:22px;flex-wrap:wrap}
+  .foot-links a{font-size:13.5px;color:var(--muted)}
+  .foot-links a:hover{color:var(--text)}
+  .foot-copy{font-size:12.5px;color:var(--muted-2)}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.is-in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .navlinks{display:none}
+    .navlinks.open{
+      display:flex;flex-direction:column;
+      position:fixed;top:76px;left:0;right:0;
+      height:calc(100vh - 76px);height:calc(100dvh - 76px);
+      background:rgba(13,21,38,0.98);
+      padding:24px;gap:6px;z-index:99;overflow-y:auto;
+    }
+    .navlinks.open a{padding:16px 18px;font-size:17px;border-radius:10px;background:rgba(255,255,255,0.03)}
+    .burger{display:flex}
+    .hero-grid{grid-template-columns:1fr}
+    .search-mock{order:-1}
+    .trust-grid{grid-template-columns:repeat(2,1fr)}
+    .svc-grid{grid-template-columns:repeat(2,1fr)}
+    .process-grid{grid-template-columns:repeat(2,1fr)}
+    .proof-card{grid-template-columns:1fr}
+    .why-grid{grid-template-columns:1fr}
+    .ai-grid{grid-template-columns:1fr}
+    .wl-card{grid-template-columns:1fr}
+    .testi-grid{grid-template-columns:1fr}
+    .cta-card{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .svc-grid{grid-template-columns:1fr}
+    .process-grid{grid-template-columns:1fr}
+    .trust-grid{grid-template-columns:1fr}
+    .hero-actions{flex-direction:column;align-items:stretch}
+    .proof-copy,.proof-metrics,.cta-copy,.cta-form,.wl-card{padding:30px 24px}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{transition:none !important;animation:none !important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body style="background:#0d1526;color:#f4f5f7">
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="SOPI">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 13.5 10.5 3l3 4.5L21 3l-6 10.5-3-4.2-4.2 6.7z" fill="#e91f3c"/></svg>
+      <b>SOPI</b>
+    </a>
+    <nav class="navlinks" id="site-nav" aria-label="Główna">
+      <a href="#uslugi">Usługi</a>
+      <a href="#proces">Jak działamy</a>
+      <a href="#case-study">Case study</a>
+      <a href="#ai-seo">AI SEO</a>
+      <a href="#white-label">White Label</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#kontakt" class="btn btn-primary btn-sm">Darmowy audyt</a>
+      <button class="burger" id="burger" aria-controls="site-nav" aria-expanded="false" aria-label="Otwórz menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal is-in">
+        <div class="stars"><span class="icons">★★★★★</span> Ocena 4.9/5 od naszych klientów</div>
+        <h1>Twoja strona zasługuje na <span class="mark">topowe miejsce</span> w Google</h1>
+        <p class="lede">Pomagamy firmom zdobywać klientów, którzy już teraz szukają ich usług w Google. Pozycjonowanie lokalne, krajowe i strategia widoczności dopasowana do Twojego biznesu.</p>
+        <div class="hero-actions">
+          <a href="#kontakt" class="btn btn-primary">Darmowy audyt SEO</a>
+          <a href="#proces" class="btn btn-ghost">Jak działa SEO?</a>
+        </div>
+      </div>
+
+      <div class="search-mock reveal is-in" aria-hidden="true">
+        <div class="search-mock-top"><span></span><span></span><span></span></div>
+        <div class="search-bar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="q" id="typeq"></span><span class="caret"></span>
+        </div>
+        <div class="results" id="results"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <section class="trustbar">
+    <div class="wrap trust-grid">
+      <div class="trust-item reveal"><div class="num"><span>270+</span></div><div class="lbl">zrealizowanych projektów SEO</div></div>
+      <div class="trust-item reveal"><div class="num">28</div><div class="lbl">specjalistów w zespole</div></div>
+      <div class="trust-item reveal"><div class="num"><span>97%</span></div><div class="lbl">klientów przedłuża współpracę</div></div>
+      <div class="trust-item reveal"><div class="num">4.9<span>/5</span></div><div class="lbl">średnia ocena klientów</div></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="uslugi">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Co oferujemy</span>
+        <h2>Jedna strategia, więcej klientów z Google</h2>
+        <p>Łączymy pozycjonowanie lokalne i krajowe, wizytówkę Google, treści i budowanie autorytetu w jedną spójną strategię wzrostu.</p>
+      </div>
+      <div class="svc-grid">
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-5.4-7-11a7 7 0 0 1 14 0c0 5.6-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+          <h3>Pozycjonowanie lokalne</h3>
+          <p>Docieramy do klientów szukających Twoich usług w konkretnym mieście czy okolicy — w wynikach Google i na mapach.</p>
+          <a href="#proces" class="link-arrow">Czytaj więcej <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></div>
+          <h3>Pozycjonowanie krajowe</h3>
+          <p>Budujemy widoczność organiczną w całej Polsce: badanie słów kluczowych, struktura strony, treści i autorytet domeny.</p>
+          <a href="#proces" class="link-arrow">Czytaj więcej <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 4l9 6.5M5 9.5V20h5v-6h4v6h5V9.5"/></svg></div>
+          <h3>Wizytówka Google</h3>
+          <p>Optymalizujemy profil firmy: kategorie, opis, zdjęcia, posty i opinie, by wyróżnić się w lokalnych wynikach i mapach.</p>
+        </div>
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <h3>Audyt SEO</h3>
+          <p>Analizujemy stronę pod kątem technicznym, treści i konkurencji — i przekładamy to na konkretny plan działań.</p>
+          <a href="#kontakt" class="link-arrow">Zamów audyt <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <h3>Konsultacje SEO</h3>
+          <p>Bezpośredni dostęp do specjalisty SEO — druga opinia, priorytety działań albo pomoc w budowie strategii.</p>
+        </div>
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h13"/></svg></div>
+          <h3>Treści pod SEO</h3>
+          <p>Tworzymy strony i artykuły wokół tego, czego naprawdę szukają Twoi klienci — użyteczne dla ludzi i dla Google.</p>
+        </div>
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2"/></svg></div>
+          <h3>Link building</h3>
+          <p>Zwiększamy autorytet strony pozyskując wartościowe linki z branżowych i lokalnych źródeł.</p>
+        </div>
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div>
+          <h3>Monitoring i raporty</h3>
+          <p>Śledzimy pozycje, widoczność i ruch, żeby zawsze wiedzieć, co działa i co robimy w kolejnym miesiącu.</p>
+        </div>
+
+        <div class="svc-card reveal">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 21h10M9 18v3M15 18v3"/></svg></div>
+          <h3>AI SEO / GEO</h3>
+          <p>Przygotowujemy markę na wyszukiwanie z AI, by pojawiać się w odpowiedziach asystentów, nie tylko w klasycznych wynikach.</p>
+          <a href="#ai-seo" class="link-arrow">Dowiedz się więcej <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="proces">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Jak działamy</span>
+        <h2>Od analizy do mierzalnych wyników biznesowych</h2>
+        <p>Nie sprzedajemy „SEO” — budujemy proces, który zamienia widoczność w Google w realne zapytania od klientów.</p>
+      </div>
+      <div class="process-grid">
+        <div class="step reveal"><div class="n">01</div><h3>Analiza</h3><p>Sprawdzamy stronę, konkurencję, słowa kluczowe i obecną widoczność w Google.</p></div>
+        <div class="step reveal"><div class="n">02</div><h3>Strategia</h3><p>Ustalamy priorytetowe frazy, strony do optymalizacji i plan treści.</p></div>
+        <div class="step reveal"><div class="n">03</div><h3>Optymalizacja</h3><p>Poprawiamy technikalia, strukturę, meta dane i szybkość strony.</p></div>
+        <div class="step reveal"><div class="n">04</div><h3>Treści</h3><p>Tworzymy nowe strony i artykuły wokół realnych wyszukiwań klientów.</p></div>
+        <div class="step reveal"><div class="n">05</div><h3>Autorytet</h3><p>Budujemy wartościowe linki i wzmianki wzmacniające domenę.</p></div>
+        <div class="step reveal"><div class="n">06</div><h3>Widoczność lokalna</h3><p>Rozwijamy wizytówkę Google i obecność w wynikach lokalnych.</p></div>
+        <div class="step reveal"><div class="n">07</div><h3>Monitoring</h3><p>Śledzimy zmiany pozycji, ruchu i widoczności na bieżąco.</p></div>
+        <div class="step reveal"><div class="n">08</div><h3>Raportowanie</h3><p>Pokazujemy, co zrobiliśmy i jakie przyniosło to efekty.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE STUDY -->
+  <section class="proof" id="case-study">
+    <div class="wrap">
+      <div class="proof-card reveal">
+        <div class="proof-copy">
+          <div class="tag">Case study · branża podologiczna, obszar lokalny</div>
+          <h3>Jak w 3 miesiące zwiększyliśmy liczbę zapytań o wizyty</h3>
+          <p>Naprawiliśmy błędy techniczne, zoptymalizowaliśmy treści i wizytówkę Google, a następnie systematycznie budowaliśmy widoczność strony w lokalnych wynikach wyszukiwania.</p>
+          <a href="#kontakt" class="btn btn-ghost btn-sm">Zobacz podobny wynik dla siebie</a>
+        </div>
+        <div class="proof-metrics">
+          <div class="pm"><span class="lbl">Frazy w TOP 3</span><span class="val">+8 <span>▲133%</span></span></div>
+          <div class="pm"><span class="lbl">Frazy w TOP 10</span><span class="val">+60 <span>▲154%</span></span></div>
+          <div class="pm"><span class="lbl">Frazy w TOP 50</span><span class="val">+288 <span>▲51%</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Czy SEO jest dla Ciebie</span>
+        <h2>Jeśli klienci Cię nie znajdą, znajdą kogoś innego</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Brakuje Ci czasu</h3>
+          <p>Prowadzenie firmy pochłania cały dzień — pozycjonowaniem zajmują się u nas specjaliści, którzy robią to od lat.</p>
+        </div>
+        <div class="why-card reveal">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <h3>Nie jesteś widoczny</h3>
+          <p>Skoro nie ma Cię w Google, klienci kupią u kogoś, kogo znajdą. Widoczność sprawia, że to oni szukają Ciebie.</p>
+        </div>
+        <div class="why-card reveal">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <h3>Reklama zbyt droga</h3>
+          <p>Ruch organiczny z SEO zostaje z Tobą tak długo, jak długo działa Twoja strona — bez opłat za każde kliknięcie.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI SEO / GEO -->
+  <section class="aiseo" id="ai-seo">
+    <div class="wrap ai-grid">
+      <div class="reveal">
+        <span class="eyebrow">Następny etap widoczności</span>
+        <h2>SEO na czasy wyszukiwarek opartych o AI</h2>
+        <p>Wyszukiwanie się zmienia. Przygotowujemy Twoją markę, by pojawiała się nie tylko w klasycznych wynikach Google, ale też w odpowiedziach generowanych przez AI.</p>
+        <a href="#kontakt" class="btn btn-primary btn-sm">Sprawdź widoczność w AI</a>
+      </div>
+      <div class="ai-flow reveal">
+        <div class="flow-label">Wyszukiwanie klasyczne</div>
+        <div class="flow-row">
+          <span class="flow-chip">Użytkownik</span><span class="flow-arrow">→</span>
+          <span class="flow-chip">Google</span><span class="flow-arrow">→</span>
+          <span class="flow-chip">Wyniki wyszukiwania</span><span class="flow-arrow">→</span>
+          <span class="flow-chip">Twoja strona</span>
+        </div>
+        <div class="flow-label" style="margin-top:18px">Wyszukiwanie z AI</div>
+        <div class="flow-row">
+          <span class="flow-chip">Użytkownik</span><span class="flow-arrow">→</span>
+          <span class="flow-chip">Asystent AI</span><span class="flow-arrow">→</span>
+          <span class="flow-chip">Wygenerowana odpowiedź</span><span class="flow-arrow">→</span>
+          <span class="flow-chip accent">Twoja firma polecana</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHITE LABEL -->
+  <section class="whitelabel" id="white-label">
+    <div class="wrap">
+      <div class="wl-card reveal">
+        <div>
+          <h2>SEO White Label dla agencji marketingowych</h2>
+          <p>Twoja agencja pozostaje marką widoczną dla klienta, a my dostarczamy strategię SEO, specjalistów, optymalizację, treści, link building i raportowanie w tle.</p>
+          <div class="wl-tags">
+            <span>Strategia SEO</span><span>Specjaliści</span><span>Optymalizacja techniczna</span><span>Treści</span><span>Link building</span><span>Raportowanie</span>
+          </div>
+        </div>
+        <a href="#kontakt" class="btn btn-ghost">Porozmawiajmy o współpracy</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Opinie klientów</span>
+        <h2>Co mówią firmy, które z nami pracują</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card reveal">
+          <div class="testi-stars">★★★★★</div>
+          <p class="quote">„Super wywiązali się z pozycjonowania. To młodzi, pełni pasji ludzie — przyjemność z nimi pracować.”</p>
+          <div class="testi-who"><div class="av">J</div><div><div class="name">Jan</div><div class="co">zjawiskoland.com</div></div></div>
+        </div>
+        <div class="testi-card reveal">
+          <div class="testi-stars">★★★★★</div>
+          <p class="quote">„Bardzo szybka komunikacja, a specjalista prowadzący naszą stronę ekspresowo reagował na każdy problem.”</p>
+          <div class="testi-who"><div class="av">J</div><div><div class="name">Julia</div><div class="co">butikbosko.pl</div></div></div>
+        </div>
+        <div class="testi-card reveal">
+          <div class="testi-stars">★★★★★</div>
+          <p class="quote">„Duży plus za komunikację. Ogólnie jestem bardzo zadowolona — zdecydowanie znają się na tym, co robią.”</p>
+          <div class="testi-who"><div class="av">K</div><div><div class="name">Katarzyna</div><div class="co">spottypark.pl</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faqs">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2>Najczęściej zadawane pytania</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item" data-open="false">
+          <button class="faq-q">Czym różni się pozycjonowanie od SEO? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button>
+          <div class="faq-a"><p>SEO to szeroki zestaw działań poprawiających widoczność strony w wyszukiwarkach, a pozycjonowanie to celowe podnoszenie pozycji dla konkretnych fraz — u nas to jedna, spójna strategia.</p></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q">Ile czasu trwa pozycjonowanie w Google? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button>
+          <div class="faq-a"><p>Pierwsze zmiany widać zwykle po kilku tygodniach, a stabilne, mierzalne efekty biznesowe po 3–6 miesiącach systematycznej pracy.</p></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q">Od czego zależy cena pozycjonowania? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button>
+          <div class="faq-a"><p>Od konkurencyjności branży, zasięgu (lokalny czy krajowy), stanu technicznego strony oraz liczby fraz i lokalizacji, na które chcesz się pozycjonować.</p></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q">Czy mogę pozycjonować stronę samodzielnie? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button>
+          <div class="faq-a"><p>Tak, ale wymaga to czasu i wiedzy z wielu obszarów naraz — dlatego wiele firm decyduje się na współpracę ze specjalistami, którzy robią to na co dzień.</p></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q">Jak mogę monitorować wyniki SEO? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></button>
+          <div class="faq-a"><p>Otrzymujesz od nas regularne raporty pozycji, widoczności i ruchu — jasno pokazujące, co zostało zrobione i jakie przyniosło efekty.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta" id="kontakt">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <div class="cta-copy">
+          <span class="eyebrow">Darmowy audyt</span>
+          <h2>Czy Twoja firma jest widoczna tam, gdzie szukają Cię klienci?</h2>
+          <p>Pokaż nam swoją stronę, a przygotujemy raport widoczności w Google oraz plan 4 konkretnych zmian, które zwiększą liczbę zapytań w 90 dni.</p>
+          <ul class="cta-list">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg> Odezwiemy się w ciągu 24 godzin</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg> Audyt strony i analiza konkurencji</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 5 5 9-10"/></svg> Spersonalizowana strategia SEO</li>
+          </ul>
+        </div>
+        <form class="cta-form" onsubmit="return false">
+          <div class="field"><label for="f-name">Imię</label><input id="f-name" type="text" placeholder="Jan Kowalski" autocomplete="name"></div>
+          <div class="field"><label for="f-email">Adres email</label><input id="f-email" type="email" placeholder="jan@firma.pl" autocomplete="email"></div>
+          <div class="field"><label for="f-phone">Telefon</label><input id="f-phone" type="tel" placeholder="+48 500 000 000" autocomplete="tel"></div>
+          <div class="field"><label for="f-www">Adres www</label><input id="f-www" type="text" placeholder="www.twojafirma.pl"></div>
+          <button class="btn btn-primary" type="submit">Sprawdź moją widoczność w Google</button>
+          <p class="cta-note">Bez zobowiązań. Odpowiadamy w 24 godziny.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <a href="#top" class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 13.5 10.5 3l3 4.5L21 3l-6 10.5-3-4.2-4.2 6.7z" fill="#e91f3c"/></svg> SOPI</a>
+    <nav class="foot-links">
+      <a href="#uslugi">Usługi</a>
+      <a href="#proces">Jak działamy</a>
+      <a href="#case-study">Case study</a>
+      <a href="#white-label">White Label</a>
+      <a href="#faqs">FAQ</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+  <div class="wrap" style="margin-top:18px">
+    <p class="foot-copy">© 2026 SOPI. Pozycjonowanie stron, które przekłada się na klientów.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* mobile menu */
+  var burger = document.getElementById('burger');
+  var nav = document.getElementById('site-nav');
+  function closeMenu(){
+    nav.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  }
+  function toggleMenu(){
+    var open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  if(burger){ burger.addEventListener('click', toggleMenu); }
+  nav.addEventListener('click', function(e){ if(e.target.tagName === 'A'){ closeMenu(); } });
+  window.addEventListener('resize', function(){ if(window.matchMedia('(min-width:981px)').matches){ closeMenu(); } });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ closeMenu(); } });
+
+  /* faq accordion */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var q = item.querySelector('.faq-q');
+    var a = item.querySelector('.faq-a');
+    q.addEventListener('click', function(){
+      var isOpen = item.getAttribute('data-open') === 'true';
+      document.querySelectorAll('.faq-item').forEach(function(other){
+        other.setAttribute('data-open','false');
+        other.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!isOpen){
+        item.setAttribute('data-open','true');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* reveal on scroll */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('is-in'); io.unobserve(en.target); }
+      });
+    }, {threshold:0.12});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-in'); });
+  }
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    revealEls.forEach(function(el){
+      var anims = el.getAnimations ? el.getAnimations() : [];
+      if(!anims.some(function(a){ return a.playState==='running'||a.playState==='finished'; })){
+        var r = el.getBoundingClientRect();
+        if(r.top < window.innerHeight){ el.classList.add('is-in'); }
+      }
+    });
+  }); });
+
+  /* search mock animation: typewriter + results */
+  var queries = [
+    { text: 'dentysta warszawa mokotów', results: [
+      {t:'Klinika Dentystyczna Uśmiech', u:'uśmiech-dent.pl', d:'Dentysta Warszawa Mokotów · zapisy online', top:true},
+      {t:'DentalCare Warszawa', u:'dentalcare.waw.pl', d:'Stomatologia rodzinna · ★4.9 (210)'},
+      {t:'Gabinet Stomatologiczny Zdrowy Ząb', u:'zdrowyzab.pl', d:'Implanty, protetyka, ortodoncja'}
+    ]},
+    { text: 'prawnik rozwód kraków', results: [
+      {t:'Kancelaria Adwokacka Nowak', u:'kancelaria-nowak.pl', d:'Prawo rodzinne · Kraków Centrum', top:true},
+      {t:'Adwokat Kraków — Rozwody', u:'adwokat-krakow.eu', d:'20 lat doświadczenia · ★4.8 (156)'},
+      {t:'Kancelaria Prawa Rodzinnego', u:'prawo-rodzinne.pl', d:'Bezpłatna konsultacja wstępna'}
+    ]},
+    { text: 'mechanik samochodowy poznań', results: [
+      {t:'Auto Serwis Kowalski', u:'autoserwis-kowalski.pl', d:'Mechanika, diagnostyka · Poznań', top:true},
+      {t:'MotoFix Poznań', u:'motofix.poznan.pl', d:'Naprawy bieżące · ★4.9 (312)'},
+      {t:'Serwis Samochodowy TurboMax', u:'turbomax-serwis.pl', d:'Klimatyzacja, zawieszenie, opony'}
+    ]}
+  ];
+
+  var qEl = document.getElementById('typeq');
+  var resEl = document.getElementById('results');
+  var qi = 0;
+
+  function renderResults(list){
+    resEl.innerHTML = '';
+    list.forEach(function(r, i){
+      var div = document.createElement('div');
+      div.className = 'result' + (r.top ? ' pinned' : '');
+      div.style.animationDelay = (i*0.15) + 's';
+      div.innerHTML =
+        '<div class="pin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-5.4-7-11a7 7 0 0 1 14 0c0 5.6-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>' +
+        '<div class="body"><div class="u">' + r.u + '</div><div class="t">' + r.t + '</div><div class="d">' + r.d + '</div></div>' +
+        (r.top ? '<span class="badge-top">TOP 1</span>' : '');
+      resEl.appendChild(div);
+    });
+  }
+
+  function typeAndShow(){
+    var q = queries[qi % queries.length];
+    var text = q.text;
+    var i = 0;
+    qEl.textContent = '';
+    resEl.innerHTML = '';
+    var typer = setInterval(function(){
+      qEl.textContent = text.slice(0, i+1);
+      i++;
+      if(i >= text.length){
+        clearInterval(typer);
+        setTimeout(function(){ renderResults(q.results); }, 300);
+      }
+    }, 55);
+  }
+
+  function cycle(){
+    typeAndShow();
+    qi++;
+  }
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(qEl && resEl){
+    if(reduceMotion){
+      qEl.textContent = queries[0].text;
+      renderResults(queries[0].results);
+    } else {
+      cycle();
+      setInterval(cycle, 6500);
+    }
+  }
+})();
+</script>
+</body>
+</html>
